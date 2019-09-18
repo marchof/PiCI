@@ -1,5 +1,4 @@
-FROM adoptopenjdk:12.0.2_10-jdk-hotspot
-# FROM ubuntu:18.04
+FROM adoptopenjdk/openjdk12
 
 RUN apt-get update && apt-get install -y \
     autoconf \
