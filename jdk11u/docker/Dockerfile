@@ -18,9 +18,11 @@ RUN apt-get update && apt-get install -y \
     unzip \
     zip
 
+VOLUME /workspace /artifacts
+
 WORKDIR /workspace
 
-CMD rm -rf build && \ 
+CMD rm -rf build && \
     bash configure --disable-warnings-as-errors --with-native-debug-symbols=none  && \
-    make images
-
+    make images && \
+    cp -Lr build/linux-arm-normal-server-release/jdk /artifacts
