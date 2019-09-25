@@ -16,7 +16,9 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 
 RUN ln -s /jdk/bin/java /usr/bin/java
 
-VOLUME /workspace /jdk /artifacts
+COPY settings.xml /usr/share/maven/conf
+
+VOLUME /workspace /jdk /m2repo /artifacts
 
 ENV MAVEN_HOME /usr/share/maven
 ENV JAVA_HOME /jdk
