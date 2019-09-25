@@ -25,5 +25,5 @@ WORKDIR /workspace
 CMD rm -rf build && \
     bash configure --disable-warnings-as-errors --with-native-debug-symbols=none  && \
     make images && \
-    cp -Lr build/linux-arm-server-release/jdk /artifacts
+    cp -Lr build/linux-arm-server-release/images/jdk /artifacts
 
