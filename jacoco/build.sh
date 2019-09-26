@@ -15,7 +15,7 @@ if [ ! -d "${ARTIFACTS}" ]; then
   ln -sf "${REVISION}" artifacts/latest
 
   docker build -t jacocobuild ./docker/
-  docker run -t -i -v $(realpath ./workspace):/workspace -v $(realpath ../jdk11u/artifacts/lastSuccessful/jdk):/jdk -v m2repo:/m2repo -v $(realpath ${ARTIFACTS}):/artifacts jacocobuild
+  docker run -t -i -v $(realpath ./workspace):/workspace -v $(realpath ../jdk/artifacts/lastSuccessful/jdk):/jdk -v m2repo:/m2repo -v $(realpath ${ARTIFACTS}):/artifacts jacocobuild
 
   ln -sf "${REVISION}" artifacts/lastSuccessful
 

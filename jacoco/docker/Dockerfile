@@ -25,5 +25,5 @@ ENV JAVA_HOME /jdk
 
 WORKDIR /workspace
 
-CMD mvn clean verify -Dbytecode.version=11
+CMD mvn clean verify -Dbytecode.version=14
 
