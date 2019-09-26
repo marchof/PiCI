@@ -14,8 +14,11 @@ if [ ! -d "${ARTIFACTS}" ]; then
   mkdir -p "${ARTIFACTS}"
   ln -sf "${REVISION}" artifacts/latest
 
-  docker build -t jacocobuild ./docker/
-  docker run -t -i -v $(realpath ./workspace):/workspace -v $(realpath ../jdk/artifacts/lastSuccessful/jdk):/jdk -v m2repo:/m2repo -v $(realpath ${ARTIFACTS}):/artifacts jacocobuild
+  docker build -t jacocobuild ./docker/ | tee ${ARTIFACTS}/docker-build.log
+  docker run -t -i -v $(realpath ./workspace):/workspace \
+                   -v $(realpath ../jdk/artifacts/lastSuccessful/jdk):/jdk \
+                   -v m2repo:/m2repo \
+                   -v $(realpath ${ARTIFACTS}):/artifacts jacocobuild | tee ${ARTIFACTS}/build.log
 
   ln -sf "${REVISION}" artifacts/lastSuccessful
 

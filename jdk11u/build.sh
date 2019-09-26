@@ -14,8 +14,9 @@ if [ ! -d "${ARTIFACTS}" ]; then
   mkdir -p "${ARTIFACTS}"
   ln -sf "${REVISION}" artifacts/latest
 
-  docker build -t jdk11build ./docker/
-  docker run -t -i -v $(realpath ./workspace):/workspace -v $(realpath ${ARTIFACTS}):/artifacts jdk11build
+  docker build -t jdk11build ./docker/ | tee ${ARTIFACTS}/docker-build.log
+  docker run -t -i -v $(realpath ./workspace):/workspace \
+                   -v $(realpath ${ARTIFACTS}):/artifacts jdk11build | tee ${ARTIFACTS}/build.log
 
   ln -sf "${REVISION}" artifacts/lastSuccessful
 
