@@ -12,7 +12,7 @@ ARTIFACTS="artifacts/${REVISION}"
 if [ ! -d "${ARTIFACTS}" ]; then
 
   mkdir -p "${ARTIFACTS}"
-  ln -sf "${REVISION}" artifacts/latest
+  ln -sfn "${REVISION}" artifacts/latest
 
   docker build -t jacocobuild ./docker/ | tee ${ARTIFACTS}/docker-build.log
   docker run -t -i -v $(realpath ./workspace):/workspace \
@@ -20,6 +20,6 @@ if [ ! -d "${ARTIFACTS}" ]; then
                    -v m2repo:/m2repo \
                    -v $(realpath ${ARTIFACTS}):/artifacts jacocobuild | tee ${ARTIFACTS}/build.log
 
-  ln -sf "${REVISION}" artifacts/lastSuccessful
+  ln -sfn "${REVISION}" artifacts/lastSuccessful
 
 fi

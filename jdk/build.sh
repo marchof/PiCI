@@ -12,12 +12,12 @@ ARTIFACTS="artifacts/${REVISION}"
 if [ ! -d "${ARTIFACTS}" ]; then
 
   mkdir -p "${ARTIFACTS}"
-  ln -sf "${REVISION}" artifacts/latest
+  ln -sfn "${REVISION}" artifacts/latest
 
   docker build -t jdkbuild ./docker/ | tee ${ARTIFACTS}/docker-build.log
   docker run -t -i -v $(realpath ./workspace):/workspace \
                    -v $(realpath ${ARTIFACTS}):/artifacts jdkbuild | tee ${ARTIFACTS}/build.log
 
-  ln -sf "${REVISION}" artifacts/lastSuccessful
+  ln -sfn "${REVISION}" artifacts/lastSuccessful
 
 fi
