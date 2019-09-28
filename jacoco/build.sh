@@ -1,25 +1,23 @@
 #!/bin/bash
-set -e
+set -e -o pipefail
 
-REPO_URL="https://github.com/jacoco/jacoco.git"
+. $(dirname $0)/../protobuild.sh
 
-git -C workspace pull || git clone ${REPO_URL} workspace
+doFetchInput() {
+  fetchGitRepo "https://github.com/jacoco/jacoco.git"
+}
 
-REVISION=$(git -C workspace rev-parse HEAD)
+doGetInputInfo() {
+  getGitInputInfo
+  cat ../jdk/output/lastSuccessful/INPUT || true
+}
 
-ARTIFACTS="artifacts/${REVISION}"
-
-if [ ! -d "${ARTIFACTS}" ]; then
-
-  mkdir -p "${ARTIFACTS}"
-  ln -sfn "${REVISION}" artifacts/latest
-
-  docker build -t jacocobuild ./docker/ | tee ${ARTIFACTS}/docker-build.log
-  docker run -t -i -v $(realpath ./workspace):/workspace \
-                   -v $(realpath ../jdk/artifacts/lastSuccessful/jdk):/jdk \
+doRunBuild() {
+  docker build -t jacocobuild ./docker/ &&
+  docker run -t -i -v ${WORKSPACE_DIR}:/workspace \
+                   -v $(realpath ../jdk/output/lastSuccessful/artifacts/jdk):/jdk \
                    -v m2repo:/m2repo \
-                   -v $(realpath ${ARTIFACTS}):/artifacts jacocobuild | tee ${ARTIFACTS}/build.log
+                   -v ${ARTIFACTS_DIR}:/artifacts jacocobuild
+}
 
-  ln -sfn "${REVISION}" artifacts/lastSuccessful
-
-fi
+run "@$"
