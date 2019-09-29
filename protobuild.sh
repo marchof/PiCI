@@ -34,26 +34,29 @@ LASTSUCCESSFUL_LN="${OUTPUT_BASE_DIR}/lastSuccessful"
 # File unambiguously identifying the specific input of this build
 INPUT_FILE="${OUTPUT_DIR}/INPUT"
 
+# File containing the status of the build: started, success or failure
+STATUS_FILE="${OUTPUT_DIR}/STATUS"
+
 
 # =============================================================================
 # Template methods that can be re-defined in specific builds
 # =============================================================================
 
 doFetchInput() {
-	echo "No input"
+  echo "No input"
 }
 
 doGetInputInfo() {
-	echo "None"
+  echo "None"
 }
 
 doRunBuild() {
-	# This function is executed in a checked section (caused by an if statement)
-	# Therefore all commands are executed regardless of failures. Only the exit
-	# status of the last command determines the build status. Multiple command should
-	# therefore typically concatenated with &&
-	echo "Some build action" &&
-	echo "Hello Build!" > "${ARTIFACTS_DIR}/artifact.txt"
+  # This function is executed in a checked section (caused by an if statement)
+  # Therefore all commands are executed regardless of failures. Only the exit
+  # status of the last command determines the build status. Multiple command should
+  # therefore typically concatenated with &&
+  echo "Some build action" &&
+  echo "Hello Build!" > "${ARTIFACTS_DIR}/artifact.txt"
 }
 
 
@@ -62,17 +65,17 @@ doRunBuild() {
 # =============================================================================
 
 fetchGitRepo() {
-	REPO_URL="$1"
-	echo "Git repo ${REPO_URL}"
-	if [ -d "${WORKSPACE_DIR}/.git" ]; then
-		git -C ${WORKSPACE_DIR} pull
-	else
-		git clone ${REPO_URL} ${WORKSPACE_DIR} 2>&1
-	fi
+  REPO_URL="$1"
+  echo "Git repo ${REPO_URL}"
+  if [ -d "${WORKSPACE_DIR}/.git" ]; then
+    git -C ${WORKSPACE_DIR} pull
+  else
+    git clone ${REPO_URL} ${WORKSPACE_DIR} 2>&1
+  fi
 }
 
 getGitInputInfo() {
-	git -C ${WORKSPACE_DIR} log -1
+  git -C ${WORKSPACE_DIR} log -1
 }
 
 
@@ -81,36 +84,42 @@ getGitInputInfo() {
 # =============================================================================
 
 _prefixOutput() {
-	while IFS= read -r line; do printf '%s [%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "${PROJECT_NAME}" "$line"; done
+  while IFS= read -r line; do printf '%s [%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "${PROJECT_NAME}" "$line"; done
+}
+
+_runBuild() {
+  echo "Run build"
+  echo "started" > ${STATUS_FILE}
+  if doRunBuild > "${BUILDLOG_FILE}" 2>&1; then
+    echo "Build successful"
+    echo "success" > ${STATUS_FILE}
+    ln -sfn "${BUILDID}" "${LASTSUCCESSFUL_LN}"
+  else
+    echo "Build failed"
+    echo "failure" > ${STATUS_FILE}
+  fi
 }
 
 _run() {
-	echo "Start build ${BUILDID}"
+  echo "Start build ${BUILDID}"
 
-	echo "Create workspace directory ${WORKSPACE_DIR}"
-	mkdir -p "${WORKSPACE_DIR}"
+  echo "Create workspace directory ${WORKSPACE_DIR}"
+  mkdir -p "${WORKSPACE_DIR}"
 
-	echo "Fetch input"
-	doFetchInput
-	INPUT_INFO="$(doGetInputInfo)"
+  echo "Fetch input"
+  doFetchInput
+  INPUT_INFO="$(doGetInputInfo)"
 
-	if [[ $(cat "${LATEST_LN}/INPUT" 2>/dev/null || true) != "${INPUT_INFO}" ]]; then
-		echo "Create output directory ${OUTPUT_DIR}"
-		mkdir -p "${OUTPUT_DIR}"
-		mkdir -p "${ARTIFACTS_DIR}"
-		ln -sfn "${BUILDID}" "${LATEST_LN}"
-		echo "${INPUT_INFO}" > ${INPUT_FILE}
-
-		echo "Run build"
-		if doRunBuild > "${BUILDLOG_FILE}" 2>&1; then
-			echo "Build successful"
-			ln -sfn "${BUILDID}" "${LASTSUCCESSFUL_LN}"
-		else
-			echo "Build failed"
-		fi
-	else
-		echo "Skip build due to unchanged input"
-	fi
+  if [[ $(cat "${LATEST_LN}/INPUT" 2>/dev/null || true) != "${INPUT_INFO}" ]]; then
+    echo "Create output directory ${OUTPUT_DIR}"
+    mkdir -p "${OUTPUT_DIR}"
+    mkdir -p "${ARTIFACTS_DIR}"
+    ln -sfn "${BUILDID}" "${LATEST_LN}"
+    echo "${INPUT_INFO}" > ${INPUT_FILE}
+    _runBuild
+  else
+    echo "Skip build due to unchanged input"
+  fi
 }
 
 run() {
