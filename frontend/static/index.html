@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PiCI</title>
+  <style>
+    body { font-family: sans-serif; color: #666; }
+    a { color: #c00; font-weight: bold; text-decoration: none }
+    h1 { border-bottom: #ccc 2px solid }
+    ul.buildlist { padding-left: 0px }
+    ul.buildlist li { background-color: #eee; padding:6px; margin-bottom:2px; list-style-type: none; border-left:#888 4px solid }
+    ul.buildlist li.success { border-left:#3a3 4px solid }
+    ul.buildlist li.failure { border-left:#c33 4px solid }
+    ul.buildlist li span.block { display:block; float:left; width: 160px }
+    pre.info { background-color:#eee; padding: 4px; border-left: #888 4px solid }
+    pre.log { background-color:#000000; color:#cccccc; padding:4px; border-left: #808080 4px solid }
+    div.footer { border-top: #ccc 1px solid; padding-top: 4px; font-size: 8pt; margin-top: 30px; }
+    [v-cloak] { display: none }
+  </style>
+</head>
+<body>
+  <h1>PiCI</h1>
+  <div id="app" v-cloak>
+    <router-view></router-view>
+  </div>
+  <div class="footer">
+    <a href="https://github.com/marchof/PiCI">https://github.com/marchof/PiCI</a>
+  </div>
+
+  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script src="pages/latestbuilds.js"></script>
+  <script src="pages/builds.js"></script>
+  <script src="pages/builddetails.js"></script>
+
+  <script>
+    Vue.use(VueRouter)
+    var app = new Vue({
+      el: '#app',
+      router: new VueRouter({
+        routes: [
+          { path: '/', component: latestbuilds },
+          { path: '/:id', name: 'builds', component: builds },
+          { path: '/:id/:ts', name: 'builddetails', component: builddetails }
+        ]
+      })
+    })
+  </script>
+</body>
+</html>
