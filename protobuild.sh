@@ -37,6 +37,9 @@ INPUT_FILE="${OUTPUT_DIR}/INPUT"
 # File containing the status of the build: started, success or failure
 STATUS_FILE="${OUTPUT_DIR}/STATUS"
 
+# File containing build time
+TIME_FILE="${OUTPUT_DIR}/TIME"
+
 
 # =============================================================================
 # Template methods that can be re-defined in specific builds
@@ -68,7 +71,7 @@ fetchGitRepo() {
   REPO_URL="$1"
   echo "Git repo ${REPO_URL}"
   if [ -d "${WORKSPACE_DIR}/.git" ]; then
-    git -C ${WORKSPACE_DIR} pull
+    git -C ${WORKSPACE_DIR} pull 2>&1
   else
     git clone ${REPO_URL} ${WORKSPACE_DIR} 2>&1
   fi
