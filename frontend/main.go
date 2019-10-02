@@ -6,6 +6,7 @@ import (
   "io/ioutil"
   "net/http"
   "encoding/json"
+  "sort"
   "github.com/gorilla/mux"
   "github.com/gorilla/handlers"
 )
@@ -53,6 +54,7 @@ func (c Controller) handleLatest(w http.ResponseWriter, r *http.Request) {
       builds = append(builds, b)
     }
   }
+  sortBuildsByDate(builds)
   json, _ := json.Marshal(builds)
   w.Write(json)
 }
@@ -73,6 +75,7 @@ func (c Controller) handleBuilds(w http.ResponseWriter, r *http.Request) {
       }
     }
   }
+  sortBuildsByDate(builds)
   json, _ := json.Marshal(builds)
   w.Write(json)
 }
@@ -119,4 +122,10 @@ func (c Controller) readBuild(id string, ts string) (b Build, err error)  {
   } 
   b.Input = string(input)
   return b, nil
+}
+
+func sortBuildsByDate(builds []Build) {
+  sort.Slice(builds, func(i, j int) bool {
+    return builds[i].Ts > builds[j].Ts
+  })
 }
