@@ -19,6 +19,7 @@ func main() {
   r.HandleFunc("/api/build/{id}", c.handleBuilds)
   r.HandleFunc("/api/build/{id}/{ts}", c.handleBuild)
   r.HandleFunc("/api/build/{id}/{ts}/log", c.handleBuildLog)
+  r.HandleFunc("/api/build/{id}/{ts}/input", c.handleInput)
   r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
   http.ListenAndServe(":80", handlers.LoggingHandler(os.Stdout, r))
 }
@@ -27,7 +28,6 @@ func main() {
 type Build struct {
   Id string
   Status string
-  Input string 
   Ts string
 }
 
@@ -100,6 +100,16 @@ func (c Controller) handleBuildLog(w http.ResponseWriter, r *http.Request) {
   }
 }
 
+func (c Controller) handleInput(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r)
+  content, err := ioutil.ReadFile(c.getBuildFile(vars["id"], vars["ts"], "INPUT"))
+  if err == nil {
+    w.Write(content)
+  } else {
+    http.Error(w, err.Error(), 500)
+  }
+}
+
 func (c Controller) getBuildFile(id string, ts string, path ...string) string {
   return filepath.Join(append([]string{c.BuildRoot, id, "output", ts}, path...)...)
 }
@@ -116,11 +126,6 @@ func (c Controller) readBuild(id string, ts string) (b Build, err error)  {
     return b, err
   } 
   b.Status = string(status)
-  input, err := ioutil.ReadFile(c.getBuildFile(id, ts, "INPUT"))
-  if err != nil {
-    return b, err
-  } 
-  b.Input = string(input)
   return b, nil
 }
 
