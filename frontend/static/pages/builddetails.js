@@ -3,10 +3,10 @@ var builddetails = Vue.component("builddetails", {
   template: `
     <div>
     <h2>
-      Details for Build {{ build.Ts }} of {{ build.Id }}
+      Details for Build {{ build.ts }} of {{ build.id }}
     </h2>
     <p>
-      Status: {{ build.Status }}
+      Status: {{ build.status }}
     </p>
     <h2>Input</h2>
     <p>
@@ -14,7 +14,7 @@ var builddetails = Vue.component("builddetails", {
     </p>
     <h2>Build Log</h2>
     <p>
-      <a v-bind:href="'api/build/' + build.Id + '/' + build.Ts +'/log'">raw output</a>
+      <a v-bind:href="'api/build/' + build.id + '/' + build.ts +'/log'">raw output</a>
     </p>
     <pre class="log">{{ logcontent }}</pre>
     </div>

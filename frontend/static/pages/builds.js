@@ -6,9 +6,9 @@ var builds = Vue.component("builds", {
       Builds for {{ $route.params.id }}
     </h2>
     <ul class="buildlist">
-      <li v-for="build in builds" :class="build.Status">
-        <span class="block"><router-link :to="{ name: 'builddetails', params: { id: build.Id, ts: build.Ts }}">{{ build.Ts }}</router-link></span> 
-        {{ build.Status }}
+      <li v-for="build in builds" :class="build.status">
+        <span class="block"><router-link :to="{ name: 'builddetails', params: { id: build.id, ts: build.ts }}">{{ build.ts }}</router-link></span> 
+        {{ build.status }}
       </li>
     </ul>
     </div>

@@ -26,9 +26,9 @@ func main() {
 
 
 type Build struct {
-  Id string
-  Status string
-  Ts string
+  Id string `json:"id"`
+  Status string `json:"status"`
+  Ts string `json:"ts"`
 }
 
 func (b Build) toJSON() []byte {

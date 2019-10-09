@@ -6,10 +6,10 @@ var latestbuilds = Vue.component("latestbuilds", {
       Latest Builds
     </h2>
     <ul class="buildlist">
-      <li v-for="build in latestBuilds" :class="build.Status">
-        <span class="block"><router-link :to="{ name: 'builds', params: { id: build.Id }}">{{ build.Id }}</router-link></span>
-        <span class="block"><router-link :to="{ name: 'builddetails', params: { id: build.Id, ts: build.Ts }}">{{ build.Ts }}</router-link></span> 
-        {{ build.Status }}
+      <li v-for="build in latestBuilds" :class="build.status">
+        <span class="block"><router-link :to="{ name: 'builds', params: { id: build.id }}">{{ build.id }}</router-link></span>
+        <span class="block"><router-link :to="{ name: 'builddetails', params: { id: build.id, ts: build.ts }}">{{ build.ts }}</router-link></span> 
+        {{ build.status }}
       </li>
     </ul>
     </div>
