@@ -16,12 +16,24 @@ var builds = Vue.component("builds", {
 
   data: function () {
     return {
-      builds: []
+      builds: [],
+      updateTimer: ''
     }
   },
-  
+
+  methods: {
+    loadBuilds: function () {
+      axios.get("api/build/" + this.$route.params.id).then(response => {this.builds = response.data})
+    }
+  },
+
   mounted() {
-    axios.get("api/build/" + this.$route.params.id).then(response => {this.builds = response.data})
+    this.loadBuilds()
+    this.updateTimer = setInterval(this.loadBuilds, 10000)
+  },
+
+  beforeDestroy () {
+    clearInterval(this.updateTimer)
   }
 
 })

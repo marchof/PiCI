@@ -17,12 +17,24 @@ var latestbuilds = Vue.component("latestbuilds", {
 
   data: function () {
     return {
-      latestBuilds: []
+      latestBuilds: [],
+      updateTimer: ''
     }
   },
-  
+
+  methods: {
+    loadLatestBuilds: function () {
+      axios.get("api/build/latest").then(response => {this.latestBuilds = response.data})
+    }
+  },
+
   mounted() {
-    axios.get("api/build/latest").then(response => {this.latestBuilds = response.data})
+    this.loadLatestBuilds()
+    this.updateTimer = setInterval(this.loadLatestBuilds, 10000)
+  },
+
+  beforeDestroy () {
+    clearInterval(this.updateTimer)
   }
 
 })
