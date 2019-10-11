@@ -90,17 +90,23 @@ _prefixOutput() {
   while IFS= read -r line; do printf '%s [%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "${PROJECT_NAME}" "$line"; done
 }
 
+_timestamp() {
+  echo "$1 $(date -u "+%s")" >> ${TIME_FILE}
+}
+
 _runBuild() {
   echo "Run build"
-  echo "started" > ${STATUS_FILE}
+  echo -n "started" > ${STATUS_FILE}
+  _timestamp "startBuild"
   if doRunBuild > "${BUILDLOG_FILE}" 2>&1; then
     echo "Build successful"
-    echo "success" > ${STATUS_FILE}
+    echo -n "success" > ${STATUS_FILE}
     ln -sfn "${BUILDID}" "${LASTSUCCESSFUL_LN}"
   else
     echo "Build failed"
-    echo "failure" > ${STATUS_FILE}
+    echo -n "failure" > ${STATUS_FILE}
   fi
+  _timestamp "endBuild"
 }
 
 _run() {
@@ -109,19 +115,26 @@ _run() {
   echo "Create workspace directory ${WORKSPACE_DIR}"
   mkdir -p "${WORKSPACE_DIR}"
 
+  echo "Create output directory ${OUTPUT_DIR}"
+  mkdir -p "${OUTPUT_DIR}"
+  _timestamp "start"
+
   echo "Fetch input"
+  _timestamp "startFetchInput"
   doFetchInput
   INPUT_INFO="$(doGetInputInfo)"
+  _timestamp "endFetchInput"
 
   if [[ $(cat "${LATEST_LN}/INPUT" 2>/dev/null || true) != "${INPUT_INFO}" ]]; then
-    echo "Create output directory ${OUTPUT_DIR}"
-    mkdir -p "${OUTPUT_DIR}"
     mkdir -p "${ARTIFACTS_DIR}"
     ln -sfn "${BUILDID}" "${LATEST_LN}"
     echo "${INPUT_INFO}" > ${INPUT_FILE}
     _runBuild
+    _timestamp "end"
   else
     echo "Skip build due to unchanged input"
+    echo "Remove output directory ${OUTPUT_DIR}"
+    rm -r "${OUTPUT_DIR}"
   fi
 }
 
