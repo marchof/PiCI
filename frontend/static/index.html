@@ -36,6 +36,26 @@
 
   <script>
     Vue.use(VueRouter)
+    Vue.mixin({
+      methods: {
+        printDuration: function (build) {
+          if (build.starttime == 0) {
+            return ""
+          }
+          if (build.status == "started") {
+            str = "since "
+          } else {
+            str = "after "
+          }
+          minutes = Math.floor(build.duration / 60)
+          if (minutes > 0) {
+            str += minutes + "m "
+          }
+          str +=  (build.duration % 60) + "s"
+          return str
+        }
+      }
+    })
     var app = new Vue({
       el: '#app',
       router: new VueRouter({

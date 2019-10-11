@@ -9,7 +9,7 @@ var latestbuilds = Vue.component("latestbuilds", {
       <li v-for="build in latestBuilds" :class="build.status">
         <span class="block"><router-link :to="{ name: 'builds', params: { id: build.id }}">{{ build.id }}</router-link></span>
         <span class="block"><router-link :to="{ name: 'builddetails', params: { id: build.id, ts: build.ts }}">{{ build.ts }}</router-link></span> 
-        {{ build.status }}
+        {{ build.status }} {{ printDuration(build) }}
       </li>
     </ul>
     </div>

@@ -5,8 +5,11 @@ import (
   "path/filepath"
   "io/ioutil"
   "net/http"
+  "encoding/csv"
   "encoding/json"
   "sort"
+  "strconv"
+  "time"
   "github.com/gorilla/mux"
   "github.com/gorilla/handlers"
 )
@@ -29,6 +32,8 @@ type Build struct {
   Id string `json:"id"`
   Status string `json:"status"`
   Ts string `json:"ts"`
+  StartTime int64 `json:"starttime"`
+  Duration int64 `json:"duration"`
 }
 
 func (b Build) toJSON() []byte {
@@ -114,6 +119,29 @@ func (c Controller) getBuildFile(id string, ts string, path ...string) string {
   return filepath.Join(append([]string{c.BuildRoot, id, "output", ts}, path...)...)
 }
 
+func (c Controller) readTimes(id string, ts string) (t map[string]int64, err error) {
+  f, err := os.Open(c.getBuildFile(id, ts, "TIME"))
+  if err != nil {
+    return nil, err
+  }
+  defer f.Close()
+
+  reader := csv.NewReader(f)
+  reader.Comma = ' '
+  lines, err := reader.ReadAll()
+  if err != nil {
+    return nil, err
+  }
+  t = make(map[string]int64)
+  for _, line := range lines {
+    value, err := strconv.ParseInt(line[1], 10, 64)
+    if err == nil {
+      t[line[0]] = value
+    }
+  }
+  return t, nil
+}
+
 func (c Controller) readBuild(id string, ts string) (b Build, err error)  {
   b = Build{Id: id}
   path, err := filepath.EvalSymlinks(c.getBuildFile(id, ts))
@@ -126,6 +154,19 @@ func (c Controller) readBuild(id string, ts string) (b Build, err error)  {
     return b, err
   } 
   b.Status = string(status)
+
+  t, err := c.readTimes(id, ts)
+  if err == nil {
+    b.StartTime = t["start"]
+    end := t["end"]
+    if end == 0 {
+      now := time.Now()
+      b.Duration = now.Unix() - b.StartTime
+    } else {
+      b.Duration = end - b.StartTime
+    }
+  }
+
   return b, nil
 }
 

@@ -6,7 +6,7 @@ var builddetails = Vue.component("builddetails", {
       Details for Build {{ build.ts }} of {{ build.id }}
     </h2>
     <p>
-      Status: {{ build.status }}
+      Status: {{ build.status }} {{ printDuration(build) }}
     </p>
     <h2>Input</h2>
     <p>

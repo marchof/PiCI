@@ -8,7 +8,7 @@ var builds = Vue.component("builds", {
     <ul class="buildlist">
       <li v-for="build in builds" :class="build.status">
         <span class="block"><router-link :to="{ name: 'builddetails', params: { id: build.id, ts: build.ts }}">{{ build.ts }}</router-link></span> 
-        {{ build.status }}
+        {{ build.status }} {{ printDuration(build) }}
       </li>
     </ul>
     </div>
