@@ -39,7 +39,7 @@
     Vue.mixin({
       methods: {
         printDuration: function (build) {
-          if (build.starttime == 0) {
+          if (!build.starttime) {
             return ""
           }
           if (build.status == "started") {
