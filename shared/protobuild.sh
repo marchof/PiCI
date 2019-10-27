@@ -69,11 +69,14 @@ doRunBuild() {
 
 fetchGitRepo() {
   REPO_URL="$1"
-  echo "Git repo ${REPO_URL}"
+  BRANCH="$2"
+  echo "Git repo ${REPO_URL} on ${BRANCH}"
   if [ -d "${WORKSPACE_DIR}/.git" ]; then
-    git -C ${WORKSPACE_DIR} pull 2>&1
+    git -C ${WORKSPACE_DIR} fetch 2>&1
+    git -C ${WORKSPACE_DIR} checkout ${BRANCH} 2>&1
+    git -C ${WORKSPACE_DIR} reset --hard origin/${BRANCH} 2>&1
   else
-    git clone ${REPO_URL} ${WORKSPACE_DIR} 2>&1
+    git clone -b ${BRANCH} ${REPO_URL} ${WORKSPACE_DIR} 2>&1
   fi
 }
 

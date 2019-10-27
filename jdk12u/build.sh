@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e -o pipefail
 
-. $(dirname $0)/../protobuild.sh
+. $(dirname $0)/../shared/protobuild.sh
 
 doFetchInput() {
-  fetchGitRepo "https://github.com/openjdk/jdk12u.git"
+  fetchGitRepo "https://github.com/openjdk/jdk12u.git" "master"
 }
 
 doGetInputInfo() {
