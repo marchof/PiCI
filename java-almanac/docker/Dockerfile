@@ -1,12 +1,10 @@
 FROM ubuntu:19.04
 
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
     curl \
-    python3 \
-    python3-pip
-
-RUN pip3 install awscli --upgrade --user
+    awscli
 
 
 ARG SHA=8d59e4469f2a579935dc13e2a54ef4cc313f2f6a2f88d424cc0c803df65440dd
@@ -22,4 +20,5 @@ VOLUME /site /artifacts
 WORKDIR /site
 
 CMD hugo && \
-    hugo deploy --maxDeletes 0
+    hugo deploy --maxDeletes 0 && \
+    aws cloudfront create-invalidation --distribution-id ECI1PGYSTNAWG --paths "/*"
