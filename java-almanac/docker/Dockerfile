@@ -20,5 +20,5 @@ VOLUME /site /artifacts
 WORKDIR /site
 
 CMD hugo && \
-    hugo deploy --maxDeletes 0 && \
+    hugo deploy --maxDeletes 100 && \
     aws cloudfront create-invalidation --distribution-id ECI1PGYSTNAWG --paths "/*"
