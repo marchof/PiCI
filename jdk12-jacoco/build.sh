@@ -9,15 +9,15 @@ doFetchInput() {
 
 doGetInputInfo() {
   getGitInputInfo
-  cat ../jdk12u/output/lastSuccessful/INPUT || true
+  cat ../jdk12/output/lastSuccessful/INPUT || true
 }
 
 doRunBuild() {
-  docker build -t jdk12ujacocobuild ./docker/ &&
+  docker build -t jdk12jacocobuild ./docker/ &&
   docker run -t -i -v ${WORKSPACE_DIR}:/workspace \
-                   -v $(realpath ../jdk12u/output/lastSuccessful/artifacts/jdk):/jdk \
+                   -v $(realpath ../jdk12/output/lastSuccessful/artifacts/jdk):/jdk \
                    -v m2repo:/m2repo \
-                   -v ${ARTIFACTS_DIR}:/artifacts jdk12ujacocobuild
+                   -v ${ARTIFACTS_DIR}:/artifacts jdk12jacocobuild
 }
 
 run "@$"
