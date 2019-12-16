@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -o pipefail
 
-BUILDS="jdk11u jdk12u jdk13u jdk14 jdk jdk11u-jacoco jdk12u-jacoco jdk13u-jacoco jdk14-jacoco jdk-jacoco java-almanac"
+BUILDS="jdk11 jdk12 jdk13 jdk14 jdk jdk11-jacoco jdk12-jacoco jdk13-jacoco jdk14-jacoco jdk-jacoco java-almanac"
 
 for build in $BUILDS; do
   (cd $build && ./build.sh)
