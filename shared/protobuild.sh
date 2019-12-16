@@ -85,6 +85,23 @@ getGitInputInfo() {
 }
 
 
+fetchHgRepo() {
+  REPO_URL="$1"
+  BRANCH="$2"
+  echo "Mercurial repo ${REPO_URL} on ${BRANCH}"
+  if [ -d "${WORKSPACE_DIR}/.hg" ]; then
+    hg pull -R ${WORKSPACE_DIR} ${REPO_URL}#${BRANCH} 2>&1
+    hg update --clean -R ${WORKSPACE_DIR} ${BRANCH} 2>&1
+  else
+    hg clone ${REPO_URL}#${BRANCH} ${WORKSPACE_DIR} 2>&1
+  fi
+}
+
+getHgInputInfo() {
+  hg log -l 1 -C ${WORKSPACE_DIR}
+}
+
+
 # =============================================================================
 # Build engine implementation
 # =============================================================================
