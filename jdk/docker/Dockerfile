@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk13
+FROM adoptopenjdk/openjdk14
 
 RUN apt-get update && apt-get install -y \
     autoconf \
