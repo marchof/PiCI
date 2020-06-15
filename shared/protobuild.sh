@@ -72,7 +72,7 @@ fetchGitRepo() {
   BRANCH="$2"
   echo "Git repo ${REPO_URL} on ${BRANCH}"
   if [ -d "${WORKSPACE_DIR}/.git" ]; then
-    git -C ${WORKSPACE_DIR} fetch 2>&1
+    git -C ${WORKSPACE_DIR} fetch 2>&1 || echo "Error during fetch"
     git -C ${WORKSPACE_DIR} checkout ${BRANCH} 2>&1
     git -C ${WORKSPACE_DIR} reset --hard origin/${BRANCH} 2>&1
   else
@@ -90,7 +90,7 @@ fetchHgRepo() {
   BRANCH="$2"
   echo "Mercurial repo ${REPO_URL} on ${BRANCH}"
   if [ -d "${WORKSPACE_DIR}/.hg" ]; then
-    hg pull -R ${WORKSPACE_DIR} ${REPO_URL}#${BRANCH} 2>&1
+    hg pull -R ${WORKSPACE_DIR} ${REPO_URL}#${BRANCH} 2>&1 || echo "Error during pull"
     hg update --clean -R ${WORKSPACE_DIR} ${BRANCH} 2>&1
   else
     hg clone ${REPO_URL}#${BRANCH} ${WORKSPACE_DIR} 2>&1
