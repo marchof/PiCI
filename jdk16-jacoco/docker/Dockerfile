@@ -21,7 +21,6 @@ COPY settings.xml /usr/share/maven/conf
 VOLUME /workspace /jdk /m2repo /artifacts
 
 ENV MAVEN_HOME /usr/share/maven
-ENV MAVEN_OPTS --illegal-access=warn
 ENV JAVA_HOME /jdk
 
 WORKDIR /workspace
