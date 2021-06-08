@@ -1,7 +1,4 @@
-FROM ubuntu:18.04
-
-ARG BINARY_URL=https://github.com/AdoptOpenJDK/openjdk15-binaries/releases/download/jdk-15%2B36/OpenJDK15U-jdk_arm_linux_hotspot_15_36.tar.gz
-ARG ESUM=d7de37fee91fe098791d48ea2a880cf2789949665d6bc9a232380738f99c16a9
+FROM adoptopenjdk/openjdk15
 
 RUN apt-get update && apt-get install -y \
     curl \
