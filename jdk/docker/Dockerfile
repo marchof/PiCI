@@ -1,7 +1,4 @@
-FROM ubuntu:18.04
-
-ARG BINARY_URL=https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16%2B36/OpenJDK16-jdk_arm_linux_hotspot_16_36.tar.gz
-ARG ESUM=f1d32ba01a40c98889f31368c0e987d6bbda65a7c50b8c088623b48e3a90104a
+FROM adoptopenjdk/openjdk16
 
 RUN apt-get update && apt-get install -y \
     curl \
