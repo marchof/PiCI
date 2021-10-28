@@ -4,11 +4,11 @@ set -e -o pipefail
 . $(dirname $0)/../shared/protobuild.sh
 
 doFetchInput() {
-  fetchHgRepo "http://hg.openjdk.java.net/jdk-updates/jdk11u/" "default"
+  fetchGitRepo "https://github.com/openjdk/jdk11u-dev.git" "master"
 }
 
 doGetInputInfo() {
-  getHgInputInfo
+  getGitInputInfo
 }
 
 doRunBuild() {
