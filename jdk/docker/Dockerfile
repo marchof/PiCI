@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17
+FROM eclipse-temurin:18
 
 RUN apt-get update && apt-get install -y \
     curl \
