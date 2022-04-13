@@ -4,7 +4,7 @@ set -e -o pipefail
 . $(dirname $0)/../shared/protobuild.sh
 
 doFetchInput() {
-  fetchGitRepo "https://github.com/openjdk/jdk18.git" "master"
+  fetchGitRepo "https://github.com/openjdk/jdk18u.git" "master"
 }
 
 doGetInputInfo() {
