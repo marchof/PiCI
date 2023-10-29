@@ -9,7 +9,7 @@ doFetchInput() {
 
 doGetInputInfo() {
   getGitInputInfo
-  cat ../jdk/output/lastSuccessful/INPUT || true
+  cat ../jdk20/output/lastSuccessful/INPUT || true
 }
 
 doRunBuild() {

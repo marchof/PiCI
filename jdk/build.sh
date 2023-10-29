@@ -14,7 +14,7 @@ doGetInputInfo() {
 doRunBuild() {
   docker build -t jdkbuild ./docker/ &&
   docker run -t -i -v ${WORKSPACE_DIR}:/workspace \
-                   -v $(realpath ../jdk20/output/lastSuccessful/artifacts/jdk):/jdk \
+                   -v $(realpath ../jdk21/output/lastSuccessful/artifacts/jdk):/jdk \
                    -v ${ARTIFACTS_DIR}:/artifacts jdkbuild
 }
 

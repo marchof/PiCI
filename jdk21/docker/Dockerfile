@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM eclipse-temurin:20
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -20,11 +20,6 @@ RUN apt-get update && apt-get install -y \
     make \
     unzip \
     zip
-
-RUN ln -s /jdk/bin/java /usr/bin/java
-
-ENV JAVA_HOME jdk
-ENV PATH /jdk/bin:$PATH
 
 VOLUME /workspace /artifacts /jdk
 
