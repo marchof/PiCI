@@ -12,9 +12,9 @@ doGetInputInfo() {
 }
 
 doRunBuild() {
-  docker build -t jdkbuild ./docker/ &&
+  docker build -t jdk17build ./docker/ &&
   docker run -t -i -v ${WORKSPACE_DIR}:/workspace \
-                   -v ${ARTIFACTS_DIR}:/artifacts jdkbuild
+                   -v ${ARTIFACTS_DIR}:/artifacts jdk17build
 }
 
 run "@$"

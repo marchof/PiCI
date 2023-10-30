@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11
+FROM eclipse-temurin:11
 
 RUN apt-get update && apt-get install -y \
     autoconf \
