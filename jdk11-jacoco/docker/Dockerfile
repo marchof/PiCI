@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 ARG MAVEN_VERSION=3.6.3
 ARG USER_HOME_DIR="/root"
