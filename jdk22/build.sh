@@ -4,7 +4,7 @@ set -e -o pipefail
 . $(dirname $0)/../shared/protobuild.sh
 
 doFetchInput() {
-  fetchGitRepo "https://github.com/openjdk/jdk.git" "master"
+  fetchGitRepo "https://github.com/openjdk/jdk22u.git" "master"
 }
 
 doGetInputInfo() {
@@ -14,7 +14,7 @@ doGetInputInfo() {
 doRunBuild() {
   docker build -t jdkbuild ./docker/ &&
   docker run -t -i -v ${WORKSPACE_DIR}:/workspace \
-                   -v $(realpath ../jdk22/output/lastSuccessful/artifacts/jdk):/jdk \
+                   -v $(realpath ../jdk21/output/lastSuccessful/artifacts/jdk):/jdk \
                    -v ${ARTIFACTS_DIR}:/artifacts jdkbuild
 }
 
