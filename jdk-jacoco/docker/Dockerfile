@@ -1,8 +1,8 @@
 FROM ubuntu:22.04
 
-ARG MAVEN_VERSION=3.6.3
+ARG MAVEN_VERSION=3.9.9
 ARG USER_HOME_DIR="/root"
-ARG SHA=c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0
+ARG SHA=a555254d6b53d267965a3404ecb14e53c3827c09c3b94b5678835887ab404556bfaf78dcfe03ba76fa2508649dca8531c74bca4d5846513522404d48e8c4ac8b
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
 RUN apt-get update && apt-get install -y curl git
@@ -25,6 +25,6 @@ ENV JAVA_HOME /jdk
 
 WORKDIR /workspace
 
-CMD mvn clean verify -B -Dbytecode.version=22 && \
+CMD mvn clean verify -B -Dbytecode.version=24 && \
     cp jacoco/target/jacoco-*.zip /artifacts 
 
