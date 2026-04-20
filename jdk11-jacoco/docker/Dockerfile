@@ -1,8 +1,8 @@
 FROM ubuntu:22.04
 
-ARG MAVEN_VERSION=3.9.11
+ARG MAVEN_VERSION=3.9.15
 ARG USER_HOME_DIR="/root"
-ARG SHA=bcfe4fe305c962ace56ac7b5fc7a08b87d5abd8b7e89027ab251069faebee516b0ded8961445d6d91ec1985dfe30f8153268843c89aa392733d1a3ec956c9978
+ARG SHA=33d81e0ec785f0207e3e5e3ffb61863e1dca5784c15ac3fb5ff105f69cffbea484eb8d473ea60467a63f7b0570eef8622f2fed8eee96acbe668aa313391cddb3
 ARG BASE_URL=https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
 RUN apt-get update && apt-get install -y curl git
