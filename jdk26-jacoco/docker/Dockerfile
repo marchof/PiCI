@@ -25,6 +25,6 @@ ENV JAVA_HOME /jdk
 
 WORKDIR /workspace
 
-CMD mvn clean verify -B -Dbytecode.version=27 && \
+CMD mvn clean verify -B -Dbytecode.version=26 && \
     cp jacoco/target/jacoco-*.zip /artifacts 
 
